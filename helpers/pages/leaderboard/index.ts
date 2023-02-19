@@ -1,3 +1,4 @@
-import getLeaderBoard from "./getLeaderboard";
+import getLeaderBoard from "./getLeaderboard"
+
 
 export { getLeaderBoard }
