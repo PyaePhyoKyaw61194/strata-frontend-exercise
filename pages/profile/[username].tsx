@@ -36,7 +36,7 @@ const User: FC<Props> = ({ username }) => {
 
       // adding to atom data if this is first time
       if (userIndex === -1) {
-        console.log(username + ' is added')
+        /*     console.log(username + ' is added') */
         const like: userLike = {
           username,
           isLiked: false
@@ -64,7 +64,7 @@ const User: FC<Props> = ({ username }) => {
       const userIndex = likesAtom.findIndex(person => person.username === username);
 
       if (userIndex !== -1) {
-        console.log(`updating ${username}`)
+        /*   console.log(`updating ${username}`) */
         // create a new User object with updated like property
         const updatedLike: userLike = { ...likesAtom[userIndex], isLiked: !likesAtom[userIndex].isLiked };
 
@@ -74,7 +74,7 @@ const User: FC<Props> = ({ username }) => {
 
         // set the updated array as the new state
         setLikesAtom(updatedLikes)
-        console.log(likesAtom)
+        /* console.log(likesAtom) */
         // Set current page state
         const updatedProfile: TProfileValidation = { ...profile, isLike: !profile.isLike }
         setProfile(updatedProfile)
