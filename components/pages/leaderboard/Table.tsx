@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { TleaderBoardValidation } from "../../../validations/leaderboard.validator";
-import { LinkButton } from "../../base";
+import { LikeBadge, LinkButton } from "../../base";
+
 
 export const LeaderboardTable: FC<TleaderBoardValidation> = ({ leaderboard }) => {
     const tableRowClasses = classNames(
@@ -63,6 +64,11 @@ export const LeaderboardTable: FC<TleaderBoardValidation> = ({ leaderboard }) =>
                                         {entry.username}
                                     </Link>
                                 </div>
+                                {entry.isLike &&
+                                    <div className="py-2">
+                                        <LikeBadge />
+                                    </div>
+                                }
                             </td>
                             <td className={tableRowClasses}>{entry.score}</td>
                             <td className={tableRowClasses + " hidden sm:table-cell"}>

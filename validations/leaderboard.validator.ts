@@ -10,7 +10,7 @@ const userSchema = z.object({
         invalid_type_error: "profileImage must be a string(zod)",
     }).min(1),
     score: z.number({ required_error: "score is required (zod)" }).gte(0, { message: "score should not be minus value" }),
-    /*     isLike: z.boolean().default(false) */
+    isLike: z.boolean().default(false)
 })
 
 export const leaderBoardSchema = z.object({

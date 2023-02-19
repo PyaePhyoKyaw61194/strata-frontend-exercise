@@ -1,35 +1,27 @@
+import { useAtom } from "jotai";
 import { FC, useState } from "react"
 import { useQuery } from "react-query";
+import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LoadingComp } from "../../components/base";
 import { LeaderboardTable } from "../../components/pages/leaderboard/Table";
-import zodErrorFormatter from "../../utils/zodErrorFormatter";
-import { leaderBoardSchema, TleaderBoardValidation } from "../../validations/leaderboard.validator";
-
+import { getLeaderBoard } from "../../helpers/pages/leaderboard";
+import { TleaderBoardValidation } from "../../validations/leaderboard.validator";
 
 const Leaderboard: FC = () => {
 
-  const { isLoading, error, data: leaderBoardData } = useQuery<TleaderBoardValidation, Error>({
+  const [leaderBoardData, setLeaderboardData] = useState<TleaderBoardValidation>()
+  const [likesAtom,] = useAtom(usersLikeAtom)
+
+  const { isLoading, error } = useQuery<TleaderBoardValidation, Error>({
     queryKey: 'getLeaderBoard',
     queryFn: async () => {
-      // Fetching from server
-      const res = (await fetch('/api/leaderboard'));
-
-      if (res.status !== 200) {
-        throw new Error(`Leaderboard not found. ${res.status}`)
-      }
-
-      const data = await res.json()
-
-      // validate and sanitize data
-      const leaderBoardValidation = await leaderBoardSchema.safeParseAsync(data)
-      if (leaderBoardValidation.success == false) {
-        const errRes = zodErrorFormatter(leaderBoardValidation.error)
-        throw new Error(errRes)
-      }
-
-      const validationRes = leaderBoardValidation.data
-      validationRes.leaderboard.sort((a, b) => b.score - a.score);
-      return validationRes
+      return await getLeaderBoard(likesAtom)
+    },
+    onSuccess: (data) => {
+      // sort with score descending
+      data.leaderboard.sort((a, b) => b.score - a.score);
+      // set the server data+ atom data(likes)
+      setLeaderboardData(data)
     },
   })
 
