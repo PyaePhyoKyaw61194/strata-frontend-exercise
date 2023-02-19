@@ -16,3 +16,12 @@ type ProfileData = {
   email: string;
   birthday: string;
 };
+
+type ErrorMessage = {
+  message: string
+}
+
+type TLinkButton = {
+  name: string
+  url: string
+}
