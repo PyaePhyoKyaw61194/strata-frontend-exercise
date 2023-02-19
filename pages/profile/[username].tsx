@@ -1,10 +1,12 @@
+import { useAtom } from "jotai";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { FC } from "react"
+import { FC, useState } from "react"
 import { useQuery } from "react-query";
+import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LinkButton, LoadingComp } from "../../components/base";
 import { ProfileCard } from "../../components/pages/profile/Card";
-import zodErrorFormatter from "../../utils/zodErrorFormatter";
-import { profileSchema, TProfileValidation } from "../../validations/profile.validator";
+import { getProfile } from "../../helpers/pages/profile";
+import { TProfileValidation } from "../../validations/profile.validator";
 
 
 interface Props {
@@ -23,35 +25,69 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (cont
 
 const User: FC<Props> = ({ username }) => {
 
-  const { isLoading, error, data: profile } = useQuery<TProfileValidation, Error>({
+  const [profile, setProfile] = useState<TProfileValidation>();
+  const [likesAtom, setLikesAtom] = useAtom(usersLikeAtom)
+
+  const { isLoading, error } = useQuery<TProfileValidation, Error>({
     queryKey: 'getLeaderBoard',
     queryFn: async () => {
+      const profile = await getProfile(username)
+      let userIndex = likesAtom.findIndex(person => person.username === username);
 
-      const res = (await fetch(`/api/profile/${username}`));
-
-      if (res.status !== 200) {
-        throw new Error(`Profile not found. ${res.status}`)
+      // adding to atom data if this is first time
+      if (userIndex === -1) {
+        console.log(username + ' is added')
+        const like: userLike = {
+          username,
+          isLiked: false
+        }
+        setLikesAtom((preValue) => {
+          return [...preValue, like]
+        })
+        return profile
+      }
+      else {
+        // binding with atom data
+        const stateData: TProfileValidation = { ...profile, isLike: likesAtom[userIndex].isLiked }
+        return stateData
       }
 
-      const data = await res.json()
-      const profileValidation = await profileSchema.safeParseAsync(data)
-
-      if (profileValidation.success == false) {
-        const errRes = zodErrorFormatter(profileValidation.error)
-        throw new Error(errRes)
-      }
-
-      return profileValidation.data
-
-    }
+    },
+    onSuccess: (data) => {
+      setProfile(data)
+    },
   })
+
+  const onLikeButtonClicked = () => {
+    if (profile) {
+      // find the object with the specified name
+      const userIndex = likesAtom.findIndex(person => person.username === username);
+
+      if (userIndex !== -1) {
+        console.log(`updating ${username}`)
+        // create a new User object with updated like property
+        const updatedLike: userLike = { ...likesAtom[userIndex], isLiked: !likesAtom[userIndex].isLiked };
+
+        // create a new array with the updated likes object
+        const updatedLikes = [...likesAtom];
+        updatedLikes[userIndex] = updatedLike;
+
+        // set the updated array as the new state
+        setLikesAtom(updatedLikes)
+        console.log(likesAtom)
+        // Set current page state
+        const updatedProfile: TProfileValidation = { ...profile, isLike: !profile.isLike }
+        setProfile(updatedProfile)
+      }
+    }
+  }
 
   if (isLoading) return <LoadingComp />
   if (error) return <ErrorComp message={error.message} />
 
   return (
     <div className="w-full px-4 py-20 flex flex-col items-center justify-center ">
-      {profile && <ProfileCard {...profile} />}
+      {profile && <ProfileCard {...profile} onLikeButtonClicked={onLikeButtonClicked} />}
       <LinkButton url="/leaderboard" name="Back" />
     </div>
   )

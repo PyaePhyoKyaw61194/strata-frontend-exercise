@@ -26,7 +26,7 @@ export const profileSchema = z.object({
         required_error: "profileImage is required(zod)",
         invalid_type_error: "profileImage must be a string(zod)",
     }).min(1),
-    /*    isLike: z.boolean().default(false) */
+    isLike: z.boolean().default(false)
 })
 
 export type TProfileValidation = z.infer<typeof profileSchema>

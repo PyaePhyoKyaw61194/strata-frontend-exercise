@@ -2,8 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { TProfileValidation } from "../../../validations/profile.validator";
+import { LikeButton } from "../../base";
 
-export const ProfileCard: FC<TProfileValidation> = (props) => {
+type CardFunctionProps = {
+    onLikeButtonClicked: () => void;
+};
+
+export const ProfileCard: FC<TProfileValidation & CardFunctionProps> = (props) => {
 
     return (
         <div
@@ -42,6 +47,9 @@ export const ProfileCard: FC<TProfileValidation> = (props) => {
                             {props.twitter}
                         </Link>
                     </dd>
+                </div>
+                <div className="px-2 py-2 sm:py-0">
+                    <LikeButton onClick={props.onLikeButtonClicked} isLiked={props.isLike} />
                 </div>
             </dl >
         </div >
