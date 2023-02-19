@@ -26,3 +26,8 @@ type TLinkButton = {
   name: string
   url: string
 }
+
+type userLike = {
+  username: string,
+  isLiked: boolean
+}
