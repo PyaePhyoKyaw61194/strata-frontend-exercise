@@ -15,6 +15,7 @@ type ProfileData = {
   twitter: string;
   email: string;
   birthday: string;
+  profileImage: string;
 };
 
 type ErrorMessage = {
