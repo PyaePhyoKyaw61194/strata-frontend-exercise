@@ -32,7 +32,7 @@ export default function handler(
   });
 
   if (users.findIndex(user => user.username === username) === -1) {
-    res.status(400).json({ message: "User not Found" });
+    return res.status(400).json({ message: "User not Found" });
   }
   const profileImage = `/users/${username}.png`;
   const profileData: ProfileData = {
