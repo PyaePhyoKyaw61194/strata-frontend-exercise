@@ -1,4 +1,4 @@
-import getLeaderBoard from "./getLeaderboard"
+import getLeaderBoards from "./getLeaderboards"
 
 
-export { getLeaderBoard }
+export { getLeaderBoards }

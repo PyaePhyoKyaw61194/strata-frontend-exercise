@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LoadingComp } from "../../components/base";
 import { LeaderboardTable } from "../../components/pages/leaderboard/Table";
-import { getLeaderBoard } from "../../helpers/pages/leaderboard";
+import { getLeaderBoards } from "../../helpers/pages/leaderboard";
 import { TleaderBoardValidation } from "../../validations/leaderboard.validator";
 
 const Leaderboard: FC = () => {
@@ -15,7 +15,7 @@ const Leaderboard: FC = () => {
   const { isLoading, error } = useQuery<TleaderBoardValidation, Error>({
     queryKey: 'getLeaderBoard',
     queryFn: async () => {
-      return await getLeaderBoard(likesAtom)
+      return await getLeaderBoards(likesAtom)
     },
     onSuccess: (data) => {
       // sort with score descending

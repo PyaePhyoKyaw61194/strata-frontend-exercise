@@ -2,7 +2,7 @@ import zodErrorFormatter from "../../../utils/zodErrorFormatter";
 import { leaderBoardSchema } from "../../../validations/leaderboard.validator";
 import getLeaderboardAtom from "./getLeaderBoardAtom";
 
-const getLeaderBoard = async (likesAtom: userLike[]) => {
+const getLeaderBoards = async (likesAtom: userLike[]) => {
 
     // Fetching from server
     const res = (await fetch('/api/leaderboard'));
@@ -25,4 +25,4 @@ const getLeaderBoard = async (likesAtom: userLike[]) => {
     return { leaderboard: updatedLeaderboards }
 }
 
-export default getLeaderBoard
+export default getLeaderBoards
