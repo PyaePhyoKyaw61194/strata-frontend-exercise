@@ -8,7 +8,7 @@ type CardFunctionProps = {
     onLikeButtonClicked: () => void;
 };
 
-export const ProfileCard: FC<TProfileValidation & CardFunctionProps> = (props) => {
+const ProfileCard: FC<TProfileValidation & CardFunctionProps> = (props) => {
 
     return (
         <div
@@ -56,3 +56,5 @@ export const ProfileCard: FC<TProfileValidation & CardFunctionProps> = (props) =
 
     )
 }
+
+export default ProfileCard

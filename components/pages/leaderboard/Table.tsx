@@ -6,7 +6,7 @@ import { TleaderBoardValidation } from "../../../validations/leaderboard.validat
 import { LikeBadge, LinkButton } from "../../base";
 
 
-export const LeaderboardTable: FC<TleaderBoardValidation> = ({ leaderboard }) => {
+const LeaderboardTable: FC<TleaderBoardValidation> = ({ leaderboard }) => {
     const tableRowClasses = classNames(
         'whitespace-nowrap px-4 py-2 font-medium text-gray-900',
     );
@@ -82,3 +82,5 @@ export const LeaderboardTable: FC<TleaderBoardValidation> = ({ leaderboard }) =>
 
     )
 }
+
+export default LeaderboardTable

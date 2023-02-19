@@ -1,13 +1,12 @@
 import { useAtom } from "jotai";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { FC, Suspense, useState } from "react"
+import React, { FC, Suspense, useState } from "react"
 import { useQuery } from "react-query";
 import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LinkButton, LoadingComp } from "../../components/base";
-import { ProfileCard } from "../../components/pages/profile/Card";
 import { getProfile } from "../../helpers/pages/profile";
 import { TProfileValidation } from "../../validations/profile.validator";
-
+const ProfileCard = React.lazy(() => import('../../components/pages/profile/Card'));
 
 interface Props {
   username: string;

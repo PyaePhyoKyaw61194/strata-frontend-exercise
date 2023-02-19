@@ -1,11 +1,11 @@
 import { useAtom } from "jotai";
-import { FC, Suspense, useState } from "react"
+import React, { FC, Suspense, useState } from "react"
 import { useQuery } from "react-query";
 import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LoadingComp } from "../../components/base";
-import { LeaderboardTable } from "../../components/pages/leaderboard/Table";
 import { getLeaderBoards } from "../../helpers/pages/leaderboard";
 import { TleaderBoardValidation } from "../../validations/leaderboard.validator";
+const LeaderboardTable = React.lazy(() => import('../../components/pages/leaderboard/Table'));
 
 const Leaderboard: FC = () => {
 
