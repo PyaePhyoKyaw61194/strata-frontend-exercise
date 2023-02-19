@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { FC, useState } from "react"
+import { FC, Suspense, useState } from "react"
 import { useQuery } from "react-query";
 import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LoadingComp } from "../../components/base";
@@ -29,9 +29,11 @@ const Leaderboard: FC = () => {
   if (error) return <ErrorComp message={error.message} />
 
   return (
-    <div className="w-full py-20 sm:flex sm:flex-col items-center justify-center space-y-12 text-gray-900 px-2">
-      {leaderBoardData && <LeaderboardTable leaderboard={leaderBoardData.leaderboard} />}
-    </div>
+    <Suspense fallback={<LoadingComp />}>
+      <div className="w-full py-20 sm:flex sm:flex-col items-center justify-center space-y-12 text-gray-900 px-2">
+        {leaderBoardData && <LeaderboardTable leaderboard={leaderBoardData.leaderboard} />}
+      </div>
+    </Suspense>
   )
 
 }

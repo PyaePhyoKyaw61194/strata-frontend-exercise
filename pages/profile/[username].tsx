@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { FC, useState } from "react"
+import { FC, Suspense, useState } from "react"
 import { useQuery } from "react-query";
 import { usersLikeAtom } from "../../atoms/usersLikeAtom";
 import { ErrorComp, LinkButton, LoadingComp } from "../../components/base";
@@ -86,10 +86,12 @@ const User: FC<Props> = ({ username }) => {
   if (error) return <ErrorComp message={error.message} />
 
   return (
-    <div className="w-full px-4 py-20 flex flex-col items-center justify-center ">
-      {profile && <ProfileCard {...profile} onLikeButtonClicked={onLikeButtonClicked} />}
-      <LinkButton url="/leaderboard" name="Back" />
-    </div>
+    <Suspense fallback={<LoadingComp />}>
+      <div className="w-full px-4 py-20 flex flex-col items-center justify-center ">
+        {profile && <ProfileCard {...profile} onLikeButtonClicked={onLikeButtonClicked} />}
+        <LinkButton url="/leaderboard" name="Back" />
+      </div>
+    </Suspense>
   )
 
 }
